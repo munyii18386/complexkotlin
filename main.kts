@@ -5,7 +5,17 @@ println("UW Complex Kotlin homework")
 // use fold to compress the array of strings down into a single string
 // the final string should look like FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZ
 //
-val mapFoldResults = ""
+
+var mapFoldResults = ""
+var map = emptyMap<Int, String> ()
+    for(i in 1..15){
+       when{
+           i%3==0 && i%5==0 -> map += i to "FIZZBUZZ"
+           i%3==0 -> map += i to "FIZZ"
+           i%5==0 -> map += i to "BUZZ"
+       }
+    }
+    mapFoldResults = map.values.fold(""){current, next -> current + next}
 
 
 // This is a utility function for your use as you choose, and as an
@@ -20,21 +30,50 @@ fun Int.times(block: () -> Unit): Unit {
 fun process(message: String, block: (String) -> String): String {
     return ">>> ${message}: {" + block(message) + "}"
 }
-val r1 = "" // call process() with message "FOO" and a block that returns "BAR"
+var r1 = "" // call process() with message "FOO" and a block that returns "BAR"
+r1 = process("FOO", {"BAR"})
+
 
 val r2_message = "wooga"
-val r2 = "" // call process() with message "FOO" and a block that upper-cases 
+var r2 = "" // call process() with message "FOO" and a block that upper-cases 
             // r2_message, and repeats it three times with no spaces: "WOOGAWOOGAWOOGA"
+
+r2 = process("FOO", {r2_message.toUpperCase().repeat(3)})
 
 
 // write an enum-based state machine between talking and thinking
-enum class Philosopher { }
+enum class Philosopher{
+    THINKING{
+        override fun signal() = TALKING
+    },
+    TALKING{
+        override fun signal() = THINKING
+        
+    };
+
+    abstract fun signal(): Philosopher
+
+ 	public override fun toString(): String{
+       	var response = ""
+        when{
+           signal() == TALKING ->  response = "Allow me to suggest and idea..."
+            signal() == THINKING -> response ="Deep Thoughts"
+        }
+        return response
+    } 
+}
+//Bonus points attempt:
+//Seneca the younger was a Philosopher. He is mostly associated with stoic philosphy which can be summarized as
+//using wisdom to navigate life's inevitable pittfalls.
 
 // create an class "Command" that can be used as a function (provide an "invoke()" function)
 // that takes a single parameter ("message" of type String)
 // primary constructor should take a String argument ("prompt")
 // when called, the Command object should return a String containing the prompt and then the message
 class Command(val prompt: String) {
+    operator fun invoke(message:String): String{
+            return "${prompt} ${message}"
+    }   
 }
 
 
