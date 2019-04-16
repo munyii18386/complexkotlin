@@ -45,23 +45,16 @@ r2 = process("FOO", {r2_message.toUpperCase().repeat(3)})
 enum class Philosopher{
     THINKING{
         override fun signal() = TALKING
+        override fun toString() = "Deep thoughts...."
     },
     TALKING{
         override fun signal() = THINKING
-        
+        override fun toString() = "Allow me to suggest an idea..."   
     };
-
-    abstract fun signal(): Philosopher
-
- 	public override fun toString(): String{
-       	var response = ""
-        when{
-           signal() == TALKING ->  response = "Allow me to suggest and idea..."
-            signal() == THINKING -> response ="Deep Thoughts"
-        }
-        return response
-    } 
+   abstract fun signal(): Philosopher
+   
 }
+
 //Bonus points attempt:
 //Seneca the younger was a Philosopher. He is mostly associated with stoic philosphy which can be summarized as
 //using wisdom to navigate life's inevitable pittfalls.
@@ -72,7 +65,7 @@ enum class Philosopher{
 // when called, the Command object should return a String containing the prompt and then the message
 class Command(val prompt: String) {
     operator fun invoke(message:String): String{
-            return "${prompt} ${message}"
+            return "${prompt}${message}"
     }   
 }
 
@@ -88,7 +81,7 @@ println("r2 test: " + if (r2 == ">>> FOO: {WOOGAWOOGAWOOGA}") "." else "!")
 
 var seneca = Philosopher.THINKING
 print("Seneca, talk! ")
-seneca = seneca.signal()
+seneca = seneca.signal() 
 println(if (seneca.toString() == "Allow me to suggest an idea...") "." else "!")
 print("Seneca, think! ")
 seneca = seneca.signal()
